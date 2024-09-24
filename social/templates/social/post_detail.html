@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.content }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+
+        .comment-section {
+            margin-top: 20px;
+        }
+
+        .comment-card {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ post.content }}</h1>
+        <p>Created at: {{ post.created_at }}</p>
+        
+        <a href="{% url 'post_list_create' %}">Back to Post List</a>
+
+        <div class="comment-section">
+            <h2>Submit Comment</h2>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Add Comment</button>
+            </form>
+            <h2>Comments</h2>
+            {% for comment in comments %}
+                <div class="comment-card">
+                    <p><strong>{{ comment.user.username }}</strong>: {{ comment.content }}</p>
+                    <p>Created at: {{ comment.created_at }}</p>
+                </div>
+            {% empty %}
+                <p>No comments yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
